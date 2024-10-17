@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #010d01;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+main {
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+#calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#calendar-table th, #calendar-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#calendar-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.event {
+    background-color: #e6f3ff;
+    border-radius: 4px;
+    padding: 4px;
+    margin: 2px 0;
+}
+
+@media (max-width: 768px) {
+    #calendar-table {
+        font-size: 14px;
+    }
+}
