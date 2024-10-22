@@ -40,6 +40,13 @@ main {
     margin: 2px 0;
 }
 
+.event-cell {
+    background-color: lightblue; /* Change to your preferred color */
+    border: 1px solid blue; /* Optional: add a border */
+    position: relative; /* For positioning if needed */
+}
+
+
 @media (max-width: 768px) {
     #calendar-table {
         font-size: 14px;

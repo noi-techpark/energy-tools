@@ -19,38 +19,47 @@ document.addEventListener('DOMContentLoaded', function() {
         tableBody.appendChild(row);
     }
 
+    const startDate = getCurrentDateFormatted(); // Default to 08:00:00
+    const endDate = getCurrentDateFormatted(20, 0, 0); // Set to 20:00:00
+
     // Function to add events
     function addEvent(room, startTime, endTime, eventName) {
         const startHour = startTime.getHours();
         const endHour = endTime.getHours();
         const duration = endHour - startHour;
-
-        const roomIndex = ['Seminar 1', 'Seminar 2', 'Seminar 3', 'Seminar 4', 'Foyer', 'Crane Hall'].indexOf(room) + 1;
-        const rowIndex = startHour - 9;  // Assuming the table starts at 9:00
-
-        const cell = document.querySelector(`#calendar-table tbody tr:nth-child(${rowIndex + 1}) td:nth-child(${roomIndex + 1})`);
-        cell.innerHTML = `<div class="event">${eventName}</div>`;
-        cell.rowSpan = duration;
-
-        // Remove cells that are now spanned
-        for (let i = 1; i < duration; i++) {
-            const rowToAdjust = document.querySelector(`#calendar-table tbody tr:nth-child(${rowIndex + 1 + i})`);
-            rowToAdjust.deleteCell(roomIndex);
+        const roomIndex = ['Seminar 1', 'Seminar 2', 'Seminar 3', 'Seminar 4', 'Foyer', 'Crane Hall'].indexOf(room);
+        const rowIndex = startHour - 9; 
+    
+        console.log('ROOM');
+        console.log(room);
+    
+        // Fill each cell for the duration of the event
+        for (let i = 0; i < duration; i++) {
+            const cell = document.querySelector(`#calendar-table tbody tr:nth-child(${rowIndex + 1 + i}) td:nth-child(${roomIndex + 2})`);
+            if(i===0){
+            cell.innerHTML = `<div class="event">${eventName}</div>`;
+            }
+            if (cell) {                
+                cell.classList.add('event-cell');
+            } else {
+                console.error(`Cell not found for room: ${room}, row: ${rowIndex + 1 + i}, column: ${roomIndex + 2}`);
+            }
         }
     }
+    
 
-    async function getData(){
+    async function getData() {
         const baseUrl = 'https://tourism.api.opendatahub.com/v1/EventShort';
-
+    
         const params = new URLSearchParams({
-        pagenumber: '1',
-        startdate: '2024-10-21T08:00:00',
-        enddate: '2024-10-21T20:00:00',
-        eventlocation: 'NOI',
-        active: 'true',
-        sortorder: 'ASC',
-        optimizedates: 'true',
-        removenullvalues: 'true'
+            pagenumber: '1',
+            startdate: startDate,
+            enddate: endDate,
+            eventlocation: 'NOI',
+            active: 'true',
+            sortorder: 'ASC',
+            optimizedates: 'true',
+            removenullvalues: 'true'
         });
 
         const url = `${baseUrl}?${params.toString()}`;
@@ -74,23 +83,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function elaborateData(data){
         console.log('startiiiing')
-        const events = [];
+        const currentDate = new Date();
         for(let i=0; i<Object.keys(data.Items).length; i++){
             var roomList = data.Items[i].RoomBooked;
             for (let j=0;j<Object.keys(roomList).length; j++){
                 var roomBooked = data.Items[i].RoomBooked[j];
                 console.log(roomBooked['SpaceDesc'])
-                const [present,roomMapped] = mapStatus(roomBooked['SpaceDesc']);
-                if(present){
-                    console.log(roomMapped);
-                    var startTime = new Date(roomBooked['StartDate']);
-                    var endTime = new Date(roomBooked['EndDate']);
+                const {found,room} = mapStatus(roomBooked['SpaceDesc']);
+                console.log(room)
+                if(found){
+                    var startTime =new Date(roomBooked['StartDate']);
+                    var endTime =  new Date(roomBooked['EndDate']);
                     var eventName = data.Items[i]['EventDescription'];
+                    console.log(startTime);
+                    console.log(endTime);
 
-                    var event = new EventDTO(roomMapped,startTime,endTime,eventName);  
-
-                    addEvent(event.room,event.startTime,event.endTime,event.eventName);
-
+                    //var event = new EventDTO(room,startTime,endTime,eventName);  
+                    if (startTime.toDateString() === currentDate.toDateString()){
+                    addEvent(room,startTime,endTime,eventName);
+                    }else{
+                        console.log('Event not on current date, skipping')
+                    }
                 }
             }
         }
@@ -102,34 +115,38 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < roomList.length; i++) {
             var roomRegex = new RegExp('.*' + roomList[i] + '.*', 'i');
             if (roomRegex.test(string)) {
-                console.log(roomList[i]);
                 return { found: true, room: roomList[i] };
             }
         }
-        console.log('No match found');
-        return { found: false, room: 'Not relevant' };
+        return { found: false, room: 'NO MATCH' };
     }
     
 
-    class EventDTO{
-        room;
-        startTime;
-        endTime;
-        eventName;
-
-        constructor(data){
-            this.room = data.room;
-            this.startTime = data.startTime;
-            this.endTime = data.endTime;
-            this.eventName = data.eventName;
+    class EventDTO {
+        constructor(room, startTime, endTime, eventName) {
+            this.room = room;
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.eventName = eventName;
         }
     }
 
+    function getCurrentDateFormatted(hours = 8, minutes = 0, seconds = 0) {
+        const now = new Date();
+        now.setHours(hours, minutes, seconds, 0); // Set time to 08:00:00
+    
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const formattedHours = String(now.getHours()).padStart(2, '0');
+        const formattedMinutes = String(now.getMinutes()).padStart(2, '0');
+        const formattedSeconds = String(now.getSeconds()).padStart(2, '0');
+    
+        return `${year}-${month}-${day}T${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    }
+    
+    
     // Add synthetic data to verify it works
     getData().then(data => {elaborateData(data)});
-    //elaborateData(getData());
-    //addEvent('Seminar 1', new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 10, 0), new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 12, 0), 'Morning Meeting');
-    //addEvent('Seminar 2', new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 14, 0), new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 16, 0), 'Afternoon Workshop');
-    //addEvent('Foyer', new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 12, 0), new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 13, 0), 'Lunch Break');
-    //addEvent('Crane Hall', new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 18, 0), new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 20, 0), 'Evening Seminar');
+   
 });
