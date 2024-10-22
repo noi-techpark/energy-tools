@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to add events
     function addEvent(room, startTime, endTime, eventName) {
-        const startHour = startTime.getHours();
-        const endHour = endTime.getHours();
+        const startHour = getCorrectHour(startTime);
+        const endHour = getCorrectHour(endTime);
         const duration = endHour - startHour;
         const roomIndex = ['Seminar 1', 'Seminar 2', 'Seminar 3', 'Seminar 4', 'Foyer', 'Crane Hall'].indexOf(room);
         const rowIndex = startHour - 9; 
@@ -145,7 +145,16 @@ document.addEventListener('DOMContentLoaded', function() {
         return `${year}-${month}-${day}T${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
     }
     
-    
+    function getCorrectHour(time){
+        const minutes = time.getMinutes();
+        let hour;
+        if(minutes>=30){
+            hour = time.getHours() + 1;
+        }else{
+            hour = time.getHours();
+        }
+        return hour;
+    }
     // Add synthetic data to verify it works
     getData().then(data => {elaborateData(data)});
    
