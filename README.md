@@ -1,3 +1,7 @@
+<!-- SPDX-FileCopyrightText: 2024 NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0  -->
+
 # Energy-Tools
 - ## Objective
 Energy-Tools is a project aimed at automating the management of energy-consuming systems in a seminar center, including lights, heating, and ventilation. The automation is based on the calendar scheduling data available from the Open Data Hub.
