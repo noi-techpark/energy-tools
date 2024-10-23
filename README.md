@@ -1,6 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2024 NOI Techpark <digital@noi.bz.it>
 
-SPDX-License-Identifier: CC0-1.0  -->
+SPDX-License-Identifier: AGPL-3.0-or-later -->
 
 # Energy-Tools
 - ## Objective
