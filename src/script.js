@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("current-date").textContent =
     currentDate.toDateString();
 
-  // Generate time slots
+  // Generate time slots hkuykuh
   const tableBody = document.querySelector("#calendar-table tbody");
   for (let hour = 9; hour <= 20; hour++) {
     const row = document.createElement("tr");
