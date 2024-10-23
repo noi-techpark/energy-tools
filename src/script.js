@@ -140,15 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return { found: false, room: "NO MATCH" };
   }
 
-  class EventDTO {
-    constructor(room, startTime, endTime, eventName) {
-      this.room = room;
-      this.startTime = startTime;
-      this.endTime = endTime;
-      this.eventName = eventName;
-    }
-  }
-
   function getCurrentDateFormatted(hours = 8, minutes = 0, seconds = 0) {
     const now = new Date();
     now.setHours(hours, minutes, seconds, 0); // Set time to 08:00:00
