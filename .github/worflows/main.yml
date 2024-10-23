@@ -6,19 +6,18 @@ on:
       - "src/**"
       - "infrastructure/**"
       - ".github/workflows/main.yml"
-      - "data.csv"
 
 env:
-  PROJECT_NAME: maas4italy-pilot-user-api
+  PROJECT_NAME: energy-tools
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}-app
   DOCKER_TAG: ${{ github.sha }}
-  SERVER_PORT: 1035
+  SERVER_PORT: 1036 #to be defined
 
 jobs:
   deploy-test:
     runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
-    concurrency: 
+    concurrency:
       group: deploy-test
       cancel-in-progress: true
     steps:
@@ -31,10 +30,7 @@ jobs:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-            
           X_SERVER_PORT: ${{ env.SERVER_PORT}}
-          X_FILEPATH: "/app/users.csv"
-          #X_FILEPATH_HOST: "/var/docker/${{env.PROJECT_NAME}}/shared/data.csv"
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
@@ -45,16 +41,16 @@ jobs:
       - name: Deploy application
         uses: noi-techpark/github-actions/docker-deploy@v2
         with:
-          hosts: 'test'
+          hosts: "test"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          docker-username: 'noi-techpark-bot'
+          docker-username: "noi-techpark-bot"
           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           project-name: ${{ env.PROJECT_NAME }}
 
   deploy-prod:
     runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/prod'
-    concurrency: 
+    concurrency:
       group: deploy-prod
       cancel-in-progress: true
     steps:
@@ -67,10 +63,7 @@ jobs:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-            
           X_SERVER_PORT: ${{ env.SERVER_PORT}}
-          X_FILEPATH: "/app/users.csv"
-          #X_FILEPATH_HOST: "/var/docker/${{env.PROJECT_NAME}}/shared/data.csv"
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
@@ -81,8 +74,8 @@ jobs:
       - name: Deploy application
         uses: noi-techpark/github-actions/docker-deploy@v2
         with:
-          hosts: 'prod'
+          hosts: "prod"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          docker-username: 'noi-techpark-bot'
+          docker-username: "noi-techpark-bot"
           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           project-name: ${{ env.PROJECT_NAME }}

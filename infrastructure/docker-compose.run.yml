@@ -9,7 +9,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 3s
-    #volumes:
-    #  - ${FILEPATH_HOST}:/users.csv
+
     ports:
       - ${SERVER_PORT}:8080
