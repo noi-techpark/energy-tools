@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Generate time slots hkuykuh
   const tableBody = document.querySelector("#calendar-table tbody");
-  for (let hour = 9; hour <= 20; hour++) {
+  for (let hour = 8; hour <= 20; hour++) {
     const row = document.createElement("tr");
     const timeCell = document.createElement("td");
     timeCell.textContent = `${hour}:00`;
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "Foyer",
       "Crane Hall",
     ].indexOf(room);
-    const rowIndex = startHour - 9;
+    const rowIndex = startHour - 8;
 
     console.log("ROOM");
     console.log(room);
@@ -91,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const json = await response.json();
       console.log(json.Items);
-      console.log(Object.keys(json.Items[2].RoomBooked).length);
       return json;
     } catch (error) {
       console.error(error.message);
@@ -102,20 +101,20 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("startiiiing");
     const currentDate = new Date();
     for (let i = 0; i < Object.keys(data.Items).length; i++) {
-      var roomList = data.Items[i].RoomBooked;
+      let roomList = data.Items[i].RoomBooked;
       for (let j = 0; j < Object.keys(roomList).length; j++) {
-        var roomBooked = data.Items[i].RoomBooked[j];
+        let roomBooked = data.Items[i].RoomBooked[j];
         console.log(roomBooked["SpaceDesc"]);
         const { found, room } = mapStatus(roomBooked["SpaceDesc"]);
         console.log(room);
         if (found) {
-          var startTime = new Date(roomBooked["StartDate"]);
-          var endTime = new Date(roomBooked["EndDate"]);
-          var eventName = data.Items[i]["EventDescription"];
+          let startTime = new Date(roomBooked["StartDate"]);
+          let endTime = new Date(roomBooked["EndDate"]);
+          let eventName = data.Items[i]["EventDescription"];
           console.log(startTime);
           console.log(endTime);
 
-          //var event = new EventDTO(room,startTime,endTime,eventName);
+          //let event = new EventDTO(room,startTime,endTime,eventName);
           if (startTime.toDateString() === currentDate.toDateString()) {
             addEvent(room, startTime, endTime, eventName);
           } else {
@@ -136,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "Crane Hall",
     ];
     for (let i = 0; i < roomList.length; i++) {
-      var roomRegex = new RegExp(".*" + roomList[i] + ".*", "i");
+      let roomRegex = new RegExp(".*" + roomList[i] + ".*", "i");
       if (roomRegex.test(string)) {
         return { found: true, room: roomList[i] };
       }
