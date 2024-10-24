@@ -20,6 +20,10 @@ Energy-Tools is a project aimed at automating the management of energy-consuming
 This project uses the Open Data Hub API to fetch event data. Specifically, it utilizes the EventShort endpoint:
   - https://tourism.api.opendatahub.com/swagger/index.html#/EventShort/get_v1_EventShort
 
+- ## WebPage access
+- https://energy-tools.opendatahub.testingmachine.eu
+- https://energy-tools.testingmachine.eu
+
 Future Enhancements
 Add manual override capabilities for room settings
 
