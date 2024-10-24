@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Generate time slots hkuykuh
   const tableBody = document.querySelector("#calendar-table tbody");
-  for (let hour = 8; hour <= 20; hour++) {
+  for (let hour = 8; hour <= 24; hour++) {
     const row = document.createElement("tr");
     const timeCell = document.createElement("td");
     timeCell.textContent = `${hour}:00`;
@@ -157,6 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${year}-${month}-${day}T${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   }
 
+  //this logic needs to be fixed to fetch the correct data
   function getCorrectHour(time, string) {
     let hour;
     if (string === "start") {
@@ -164,11 +165,12 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       if (time.getMinutes() >= 30) {
         hour = time.getHours() + 1;
-      }else{
-        hour = time.getHours()
+        return hour;
+      }else{hour = time.getHours()}
       }
-    }
-
+      if(time.getHours() === 0){
+        hour = 24;
+      }
     return hour;
   }
 

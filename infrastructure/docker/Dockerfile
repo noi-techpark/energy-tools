@@ -9,4 +9,4 @@ FROM base as build
 WORKDIR /usr/src/app
 COPY src/* .
 RUN npm install -g http-server
-CMD ["http-server", "-p", "8080"]
+CMD ["http-server", "-p", "8080", "--host", "0.0.0.0"]
