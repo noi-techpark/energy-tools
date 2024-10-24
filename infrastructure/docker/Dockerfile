@@ -1,12 +1,3 @@
-# SPDX-FileCopyrightText: 2024 NOI Techpark <digital@noi.bz.it>
-#
-# SPDX-License-Identifier: CC0-1.0
+FROM nginx:alpine
+COPY /usr/src/app/* /usr/share/nginx/html
 
-FROM node:14 AS base
-EXPOSE 8080
-
-FROM base as build
-WORKDIR /usr/src/app
-COPY src/* .
-RUN npm install -g http-server
-CMD ["http-server", "-p", "8080", "--host", "0.0.0.0"]

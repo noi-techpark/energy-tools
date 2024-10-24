@@ -5,7 +5,7 @@
 services:
   web:
     build:
-      context: .  # Set the build context to the current directory
-      dockerfile: infrastructure/docker/Dockerfile  # Specify the path to the Dockerfile
+      context: .  
+      dockerfile: infrastructure/docker/Dockerfile  
     ports:
-      - "8080:8080"  # Map port 8080 on the host to port 8080 in the container
+      - "1036:80"  
