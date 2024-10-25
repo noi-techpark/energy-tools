@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Generate time slots hkuykuh
   const tableBody = document.querySelector("#calendar-table tbody");
-  for (let hour = 8; hour <= 24; hour++) {
+  for (let hour = 6; hour <= 24; hour++) {
     const row = document.createElement("tr");
     const timeCell = document.createElement("td");
     timeCell.textContent = `${hour}:00`;
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     tableBody.appendChild(row);
   }
 
-  const startDate = getCurrentDateFormatted(); // Default to 08:00:00
+  const startDate = getCurrentDateFormatted(); 
   const endDate = getCurrentDateFormatted(20, 0, 0); // Set to 20:00:00
 
   // Function to add events
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "Foyer",
       "Crane Hall",
     ].indexOf(room);
-    const rowIndex = startHour - 8;
+    const rowIndex = startHour - 6;
 
     console.log("ROOM");
     console.log(room);
@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
           let eventName = data.Items[i]["EventDescription"];
           console.log(startTime);
           console.log(endTime);
+          console.log(eventName);
 
           //let event = new EventDTO(room,startTime,endTime,eventName);
           if (startTime.toDateString() === currentDate.toDateString()) {
