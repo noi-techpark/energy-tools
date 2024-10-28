@@ -139,6 +139,7 @@ main {
     white-space: nowrap; /* Prevent text from wrapping */
     text-overflow: ellipsis; /* Add ellipsis for overflow text */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
+    z-index: 1;
   }
   
 .schedule-cell::after {
