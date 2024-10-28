@@ -3,45 +3,46 @@
 SPDX-License-Identifier: CC0-1.0  */
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 header {
-    background-color: #010d01;
-    color: white;
-    text-align: center;
-    padding: 1rem;
+  background-color: #010d01;
+  color: white;
+  text-align: center;
+  padding: 1rem;
 }
 
 main {
-    padding: 1rem;
-    overflow-x: auto;
+  padding: 1rem;
+  overflow-x: auto;
 }
 
 #calendar-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-#calendar-table th, #calendar-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
+#calendar-table th,
+#calendar-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
 }
 
 #calendar-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
 /* Time column styling */
 .time-slot {
-    font-weight: bold;
-    background-color: #f0f0f0;
-    width: 80px;
-    text-align: center;
+  font-weight: bold;
+  background-color: #f0f0f0;
+  width: 80px;
+  text-align: center;
 }
 
 /* .time-slot::after {
@@ -52,61 +53,90 @@ main {
     top: 50%;
     border-bottom: 1px dashed #ddd;
     pointer-events: none; /* Ensures the line doesn't interfere with clicks */
- 
-
-.event {
-    background-color: #e6f3ff;
-    border-radius: 4px;
-    padding: 4px;
-    margin: 2px 0;
-    position: relative;
-    z-index: 1;
-}
 
 .event-cell {
-    background-color: lightblue; /* Change to your preferred color */
-    border: 1px solid blue; /* Optional: add a border */
-    position: relative; /* For positioning if needed */
+  position: relative; /* Establishes a positioning context for the .event */
+  width: 200px; /* Example width */
+  height: 60px; /* Example height */
+  border: 1px solid #ddd;
+}
+
+.event {
+  position: absolute; /* Positioned relative to .event-cell */
+  top: 0; /* Start at the top of the .event-cell */
+  left: 0; /* Start at the left of the .event-cell */
+  width: 100%; /* Span the full width of the .event-cell */
+  height: 100%; /* Example height to show partial filling */
+  background-color: #e6f3ff;
+  padding: 4px;
+  box-sizing: border-box;
 }
 
 .event-start-0 {
-    top: 0;
-  }
-  
-  .event-start-30 {
-    top: 50%;
-  }
-  
-  .event-end-30 {
-    height: 50%;
-  }
-  
-  .event-end-60 {
-    height: 100%;
-  }
+    position: absolute; /* Positioned relative to .event-cell */
+    top: 0; /* Start at the top of the .event-cell */
+    left: 0; /* Start at the left of the .event-cell */
+    width: 100%; /* Span the full width of the .event-cell */
+    height: 100%; /* Example height to show partial filling */
+    background-color: #e6f3ff;
+    padding: 4px;
+    box-sizing: border-box;
+}
 
+.event-start-30 {
+    position: absolute; /* Positioned relative to .event-cell */
+    top: 50%; /* Start at the top of the .event-cell */
+    left: 0; /* Start at the left of the .event-cell */
+    width: 100%; /* Span the full width of the .event-cell */
+    height: 50%; /* Example height to show partial filling */
+    background-color: #e6f3ff;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.event-end-0 {
+    position: absolute; /* Positioned relative to .event-cell */
+    top: 0; /* Start at the top of the .event-cell */
+    left: 0; /* Start at the left of the .event-cell */
+    width: 100%; /* Span the full width of the .event-cell */
+    height: 100%; /* Example height to show partial filling */
+    background-color: #e6f3ff;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.event-end-30 {
+    position: absolute; /* Positioned relative to .event-cell */
+    top: 0;
+    left: 0; /* Start at the left of the .event-cell */
+    width: 100%; /* Span the full width of the .event-cell */
+    height: 50%; /* Example height to show partial filling */
+    background-color: #e6f3ff;
+    padding: 4px;
+    box-sizing: border-box;
+}
 .schedule-cell {
-    cursor: pointer;
-    min-width: 100px;
-    border: 1px solid #ddd;
-    position: relative;
-    height: 30px;
-     /* Set a specific height for the cells */
+  cursor: pointer;
+  min-width: 100px;
+  border: 1px solid #ddd;
+  position: relative;
+  height: 30px;
+  /* Set a specific height for the cells */
 }
 
 .schedule-cell::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    border-bottom: 1px dashed #ddd;
-    pointer-events: none;
-    z-index: 0; /* Ensures the line doesn't interfere with clicks */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-bottom: 1px dashed #ddd;
+  pointer-events: none;
+  z-index: 0; /* Ensures the line doesn't interfere with clicks */
 }
 
 @media (max-width: 768px) {
-    #calendar-table {
-        font-size: 14px;
-    }
+  #calendar-table {
+    font-size: 14px;
+  }
 }

@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2024 NOI Techpark <digital@noi.bz.it>
 //
-// SPDX-License-Identifier: AGPL-3.0-or-later 
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 document.addEventListener("DOMContentLoaded", function () {
   // Set current date
@@ -13,27 +13,34 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let hour = 6; hour <= 24; hour++) {
     const row = document.createElement("tr");
     const timeCell = document.createElement("td");
-    timeCell.classList.add('time-slot');
+    timeCell.classList.add("time-slot");
     timeCell.textContent = `${hour}:00`;
     row.appendChild(timeCell);
 
     for (let i = 0; i < 6; i++) {
       const cell = document.createElement("td");
-      cell.classList.add('schedule-cell');
+      cell.classList.add("schedule-cell");
       row.appendChild(cell);
     }
 
     tableBody.appendChild(row);
   }
 
-  const startDate = getCurrentDateFormatted(); 
+  const startDate = getCurrentDateFormatted();
   const endDate = getCurrentDateFormatted(20, 0, 0); // Set to 20:00:00
 
   // Function to add events
   function addEvent(room, startTime, endTime, eventName) {
-    const [startHour,startFlag] = getCorrectHour(startTime, "start");
-    const [endHour,endFlag] = getCorrectHour(endTime);
-    const duration = endHour - startHour;
+    const [startHour, startFlag] = getCorrectHour(startTime, "start");
+    const [endHour, endFlag] = getCorrectHour(endTime);
+    console.log("WATCHOUT");
+    console.log(startHour)
+    console.log(endHour);
+    console.log(endFlag);
+    let duration = endHour - startHour;
+    if(endFlag === "half"){
+      duration = duration +1;
+    }
     const roomIndex = [
       "Seminar 1",
       "Seminar 2",
@@ -58,13 +65,14 @@ document.addEventListener("DOMContentLoaded", function () {
       if (cell) {
         cell.classList.add("event-cell");
         if (i === 0) {
-          cell.innerHTML = `<div class="event">${eventName}</div>`;
-          cell.classList.add(startFlag === "half" ? "event-start-30" : "event-start-0"); 
-
+          // cell.innerHTML = `<div class="event">${eventName}</div>`;
+          cell.innerHTML = `<div class=${startFlag === "half" ? "event-start-30" : "event-start-0"}>${eventName}</div>`;
         }
-        if (i === duration -1) {
-          cell.innerHTML = `<div class="event">${eventName}</div>`;
-          cell.classList.add(endFlag === "half" ? "event-end-30" : "event-end-60"); 
+        else if (i === duration-1) {
+          //cell.innerHTML = `<div class="event">${eventName}</div>`;
+          cell.innerHTML = `<div class=${endFlag === "half" ? "event-end-30" : "event-end-0"}>${eventName}</div>`;
+        }else{
+          cell.innerHTML = `<div class="event-start-0"></div>`;
         }
       } else {
         console.error(
@@ -107,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function elaborateData(data) {
-    console.log("startiiiing");
     const currentDate = new Date();
     for (let i = 0; i < Object.keys(data.Items).length; i++) {
       let roomList = data.Items[i].RoomBooked;
@@ -123,8 +130,6 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log(startTime);
           console.log(endTime);
           console.log(eventName);
-
-          //let event = new EventDTO(room,startTime,endTime,eventName);
           if (startTime.toDateString() === currentDate.toDateString()) {
             addEvent(room, startTime, endTime, eventName);
           } else {
@@ -134,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
-  //i think the reason why it is not working lies here in the map status function
+
   function mapStatus(string) {
     const roomList = [
       "Seminar 1",
@@ -168,20 +173,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   //this logic needs to be fixed to fetch the correct data
-  function getCorrectHour(time) {
-    const hour = time.getHours();
+  function getCorrectHour(time, type) {
+    let hour = time.getHours();
     const minutes = time.getMinutes();
     let flag = "sharp";
 
-    // If minutes are 15-44, consider it "half"
     if (minutes >= 15 && minutes < 45) {
       flag = "half";
-    }
-    if(minutes > 45){
-      hour = hour +1;
+    } else if (minutes >= 45) {
+      hour += 1;
     }
 
-    // Handle midnight case
     const adjustedHour = hour === 0 ? 24 : hour;
 
     console.log(
@@ -190,7 +192,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return [adjustedHour, flag];
   }
 
-  // Add synthetic data to verify it works
   getData().then((data) => {
     elaborateData(data);
   });
