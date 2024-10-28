@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to add events
   function addEvent(room, startTime, endTime, eventName) {
-    const startHour = getCorrectHour(startTime, "start");
-    const endHour = getCorrectHour(endTime);
+    const [startHour,startFlag] = getCorrectHour(startTime, "start");
+    const [endHour,endFlag] = getCorrectHour(endTime);
     const duration = endHour - startHour;
     const roomIndex = [
       "Seminar 1",
@@ -54,11 +54,18 @@ document.addEventListener("DOMContentLoaded", function () {
           roomIndex + 2
         })`
       );
-      if (i === 0) {
-        cell.innerHTML = `<div class="event">${eventName}</div>`;
-      }
+
       if (cell) {
         cell.classList.add("event-cell");
+        if (i === 0) {
+          cell.innerHTML = `<div class="event">${eventName}</div>`;
+          cell.classList.add(startFlag === "half" ? "event-start-30" : "event-start-0"); 
+
+        }
+        if (i === duration -1) {
+          cell.innerHTML = `<div class="event">${eventName}</div>`;
+          cell.classList.add(endFlag === "half" ? "event-end-30" : "event-end-60"); 
+        }
       } else {
         console.error(
           `Cell not found for room: ${room}, row: ${
@@ -161,20 +168,26 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   //this logic needs to be fixed to fetch the correct data
-  function getCorrectHour(time, string) {
-    let hour;
-    if (string === "start") {
-      hour = time.getHours();
-    } else {
-      if (time.getMinutes() >= 30) {
-        hour = time.getHours() + 1;
-        return hour;
-      }else{hour = time.getHours()}
-      }
-      if(time.getHours() === 0){
-        hour = 24;
-      }
-    return hour;
+  function getCorrectHour(time) {
+    const hour = time.getHours();
+    const minutes = time.getMinutes();
+    let flag = "sharp";
+
+    // If minutes are 15-44, consider it "half"
+    if (minutes >= 15 && minutes < 45) {
+      flag = "half";
+    }
+    if(minutes > 45){
+      hour = hour +1;
+    }
+
+    // Handle midnight case
+    const adjustedHour = hour === 0 ? 24 : hour;
+
+    console.log(
+      `Time: ${time}, Hour: ${adjustedHour}, Minutes: ${minutes}, Flag: ${flag}`
+    );
+    return [adjustedHour, flag];
   }
 
   // Add synthetic data to verify it works

@@ -69,6 +69,21 @@ main {
     position: relative; /* For positioning if needed */
 }
 
+.event-start-0 {
+    top: 0;
+  }
+  
+  .event-start-30 {
+    top: 50%;
+  }
+  
+  .event-end-30 {
+    height: 50%;
+  }
+  
+  .event-end-60 {
+    height: 100%;
+  }
 
 .schedule-cell {
     cursor: pointer;
