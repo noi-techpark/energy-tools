@@ -13,11 +13,13 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let hour = 6; hour <= 24; hour++) {
     const row = document.createElement("tr");
     const timeCell = document.createElement("td");
+    timeCell.classList.add('time-slot');
     timeCell.textContent = `${hour}:00`;
     row.appendChild(timeCell);
 
     for (let i = 0; i < 6; i++) {
       const cell = document.createElement("td");
+      cell.classList.add('schedule-cell');
       row.appendChild(cell);
     }
 

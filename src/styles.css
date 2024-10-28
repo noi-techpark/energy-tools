@@ -36,12 +36,31 @@ main {
     background-color: #f2f2f2;
     font-weight: bold;
 }
+/* Time column styling */
+.time-slot {
+    font-weight: bold;
+    background-color: #f0f0f0;
+    width: 80px;
+    text-align: center;
+}
+
+/* .time-slot::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-bottom: 1px dashed #ddd;
+    pointer-events: none; /* Ensures the line doesn't interfere with clicks */
+ 
 
 .event {
     background-color: #e6f3ff;
     border-radius: 4px;
     padding: 4px;
     margin: 2px 0;
+    position: relative;
+    z-index: 1;
 }
 
 .event-cell {
@@ -50,6 +69,26 @@ main {
     position: relative; /* For positioning if needed */
 }
 
+
+.schedule-cell {
+    cursor: pointer;
+    min-width: 100px;
+    border: 1px solid #ddd;
+    position: relative;
+    height: 30px;
+     /* Set a specific height for the cells */
+}
+
+.schedule-cell::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-bottom: 1px dashed #ddd;
+    pointer-events: none;
+    z-index: 0; /* Ensures the line doesn't interfere with clicks */
+}
 
 @media (max-width: 768px) {
     #calendar-table {
