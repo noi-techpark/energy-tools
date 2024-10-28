@@ -70,6 +70,7 @@ main {
   background-color: #e6f3ff;
   padding: 4px;
   box-sizing: border-box;
+  
 }
 
 .event-start-0 {
@@ -124,6 +125,22 @@ main {
   /* Set a specific height for the cells */
 }
 
+/* Base style for event text */
+/* Base style for event text */
+.event, .event-start-0, .event-start-30, .event-end-0, .event-end-30 {
+    font-weight: bold; /* Make text bold */
+    padding: 6px; /* Add padding for better spacing */
+    background-color: #0078d4; /* Use a vibrant color similar to Outlook */
+    color: white; /* Ensure text is readable on the background */
+    border: 1px solid #005a9e; /* Add a border for definition */
+    border-radius: 4px; /* Rounded corners for a modern look */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    overflow: hidden; /* Ensure text doesn't overflow */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+  }
+  
 .schedule-cell::after {
   content: "";
   position: absolute;
