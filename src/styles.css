@@ -45,14 +45,26 @@ main {
   text-align: center;
 }
 
-/* .time-slot::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    border-bottom: 1px dashed #ddd;
-    pointer-events: none; /* Ensures the line doesn't interfere with clicks */
+.heating {
+    position: absolute; /* Positioned relative to .event-cell */
+    top: 0; /* Start at the top of the .event-cell */
+    left: 0; /* Start at the left of the .event-cell */
+    width: 100%; /* Span the full width of the .event-cell */
+    height: 100%; /* Example height to show partial filling */
+    background-color: #b22222;
+    box-sizing: border-box;
+    font-weight: bold; /* Make text bold */
+    padding: 6px; /* Add padding for better spacing */
+    color: white; /* Ensure text is readable on the background */
+    border-radius: 4px; /* Rounded corners for a modern look */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    overflow: hidden; /* Ensure text doesn't overflow */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    z-index: 1;
+}
+
 
 .event-cell {
   position: relative; /* Establishes a positioning context for the .event */
