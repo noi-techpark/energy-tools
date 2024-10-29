@@ -31,12 +31,14 @@ main {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
+  width: 150px; /* Set a fixed width for all columns */
+}
+/* Specific rule for the first column (time column) */
+#calendar-table th:first-child,
+#calendar-table td:first-child {
+  width: 80px; /* Set a smaller width for the time column */
 }
 
-#calendar-table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
 /* Time column styling */
 .time-slot {
   font-weight: bold;
@@ -210,5 +212,9 @@ main {
 @media (max-width: 768px) {
   #calendar-table {
     font-size: 14px;
+  }
+  #calendar-table th,
+  #calendar-table td {
+    width: auto; /* Allow columns to adjust on smaller screens */
   }
 }
