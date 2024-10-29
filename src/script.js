@@ -56,32 +56,37 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("ROOM");
     console.log(room);
     //Add heating alert
-    // const heating = document.querySelector(
-    //   `#calendar-table tbody tr:nth-child(${rowIndex}) td:nth-child(${
-    //     roomIndex + 2
-    //   })`
-    // );
-    // heating.classList.add("event-cell");
-    // Fill each cell for the duration of the event
+    const heating = document.querySelector(
+      `#calendar-table tbody tr:nth-child(${rowIndex}) td:nth-child(${
+        roomIndex + 2
+      })`
+    );
+    heating.classList.add("event-cell");
+    //Fill each cell for the duration of the event
     for (let i = 0; i < duration; i++) {
       const cell = document.querySelector(
         `#calendar-table tbody tr:nth-child(${rowIndex + 1 + i}) td:nth-child(${
           roomIndex + 2
         })`
       );
-      //heating.innerHTML = `<div class="heating">HEAT</div>`;
+      
 
       if (cell) {
         cell.classList.add("event-cell");
+        
         if (i === 0) {
           // cell.innerHTML = `<div class="event">${eventName}</div>`;
           cell.innerHTML = `<div class=${startFlag === "half" ? "event-start-30" : "event-start-0"}>${eventName}</div>`;
+          cell.innerHTML += `<div class=${startFlag === "half" ? "heating" : "heating"}></div>`;
+          heating.innerHTML = `<div class=${startFlag === "half" ? "heating-start-30" : "heating"}>HEAT</div>`;
         }
         else if (i === duration-1) {
           //cell.innerHTML = `<div class="event">${eventName}</div>`;
-          cell.innerHTML = `<div class=${endFlag === "half" ? "event-end-30" : "event-end-0"}>${eventName}</div>`;
+          cell.innerHTML = `<div class=${endFlag === "half" ? "event-end-30" : "event-end-0"}></div>`;
+          cell.innerHTML += `<div class=${endFlag === "half" ? "heating-end-30" : "heating-end-0"}></div>`;
         }else{
           cell.innerHTML = `<div class="event-start-0"></div>`;
+          cell.innerHTML += `<div class="heating"></div>`;
         }
       } else {
         console.error(
