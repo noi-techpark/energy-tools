@@ -56,12 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("ROOM");
     console.log(room);
     //Add heating alert
-    const heating = document.querySelector(
-      `#calendar-table tbody tr:nth-child(${rowIndex}) td:nth-child(${
-        roomIndex + 2
-      })`
-    );
-    heating.classList.add("event-cell");
+    // const heating = document.querySelector(
+    //   `#calendar-table tbody tr:nth-child(${rowIndex}) td:nth-child(${
+    //     roomIndex + 2
+    //   })`
+    // );
+    // heating.classList.add("event-cell");
     // Fill each cell for the duration of the event
     for (let i = 0; i < duration; i++) {
       const cell = document.querySelector(
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
           roomIndex + 2
         })`
       );
-      heating.innerHTML = `<div class="heating">HEAT</div>`;
+      //heating.innerHTML = `<div class="heating">HEAT</div>`;
 
       if (cell) {
         cell.classList.add("event-cell");
