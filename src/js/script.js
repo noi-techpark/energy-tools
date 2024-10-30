@@ -12,6 +12,59 @@ document.addEventListener("DOMContentLoaded", function () {
   const startDate = getCurrentDateFormatted();
   const endDate = getCurrentDateFormatted(20, 0, 0); 
 
+//#region UTILITY FUNCTIONS  
+  function mapStatus(string) {
+    const roomList = [
+      "Seminar 1",
+      "Seminar 2",
+      "Seminar 3",
+      "Seminar 4",
+      "Foyer",
+      "Crane Hall",
+    ];
+    for (let i = 0; i < roomList.length; i++) {
+      let roomRegex = new RegExp(".*" + roomList[i] + ".*", "i");
+      if (roomRegex.test(string)) {
+        return { found: true, room: roomList[i] };
+      }
+    }
+    return { found: false, room: "NO MATCH" };
+  }
+
+  function getCurrentDateFormatted(hours = 8, minutes = 0, seconds = 0) {
+    const now = new Date();
+    now.setHours(hours, minutes, seconds, 0); // Set time to 08:00:00
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const formattedHours = String(now.getHours()).padStart(2, "0");
+    const formattedMinutes = String(now.getMinutes()).padStart(2, "0");
+    const formattedSeconds = String(now.getSeconds()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  function getCorrectHour(time, type) {
+    let hour = time.getHours();
+    const minutes = time.getMinutes();
+    let flag = "sharp";
+
+    if (minutes >= 15 && minutes < 45) {
+      flag = "half";
+    } else if (minutes >= 45) {
+      hour += 1;
+    }
+
+    const adjustedHour = hour === 0 ? 24 : hour;
+
+    console.log(
+      `Time: ${time}, Hour: ${adjustedHour}, Minutes: ${minutes}, Flag: ${flag}`
+    );
+    return [adjustedHour, flag];
+  }
+//#endregion
+
 //#region INDEX PAGE ONLY 
   if (isIndexPage) {
     const tableBody = document.querySelector("#calendar-table tbody");
@@ -104,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //#region
 
-//#region BOTH PAGES SHARED REGION
+
   async function getData() {
     const baseUrl = "https://tourism.api.opendatahub.com/v1/EventShort";
 
@@ -154,8 +207,9 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log(endTime);
           console.log(eventName);
           if (startTime.toDateString() === currentDate.toDateString()) {
+
             if (isIndexPage) {
-              addEvent(room, startTime, endTime, eventName);
+              addEvent(room, startTime, endTime, eventName); //addevent can be called only from the context of the IndexPage
             }
 
             let heatingTime = new Date(startTime.getTime());
@@ -168,7 +222,6 @@ document.addEventListener("DOMContentLoaded", function () {
               endTime: endTime,
               eventName: eventName,
             });
-            console.log("ELABORATE Global events :", globalEvents.length); // Debug log
           } else {
             console.log("Event not on current date, skipping");
           }
@@ -177,32 +230,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+//#region ACTIONS CARDS
   function generateActionCards() {
     const actionsContainer = document.querySelector(".actions-container");
-    console.log("Actions container:", actionsContainer); // Debug log
-    console.log("Global events:", globalEvents); // Debug log
+    console.log("Actions container:", actionsContainer);
+    console.log("Global events:", globalEvents.length); 
 
     if (!actionsContainer) {
       console.log("Actions container not found!");
       return;
     }
 
-    // Clear existing cards
     actionsContainer.innerHTML = "";
 
-    // Sort events by start time
-    //globalEvents.sort((a, b) => a.startTime - b.startTime);
-
-    console.log("Generating cards for events:", globalEvents.length); // Debug log
-
-    globalEvents.forEach((event, index) => {
+    globalEvents.forEach((event) => {
       console.log("Creating card for event:", event); // Debug log
-      const actionCard = createActionCard(event, index);
+      const actionCard = createActionCard(event);
       actionsContainer.appendChild(actionCard);
     });
   }
 
-  function createActionCard(event, index) {
+  function createActionCard(event) {
     const card = document.createElement("div");
     card.className = "action-card";
 
@@ -210,10 +258,8 @@ document.addEventListener("DOMContentLoaded", function () {
       hour: "2-digit",
       minute: "2-digit",
     });
-
-    console.log(`What is this?:`, event.startTime.getHours());
-    // Generate appropriate actions based on room type and time
     const actions = generateActionsForEvent(event);
+
     // I need to perform a check to avoid inserting the same room multiple times
     // so the following html must probably be anticipated by an if statement to check whether 
     // the event.room is already present
@@ -273,60 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return actions;
   }
-
-  function mapStatus(string) {
-    const roomList = [
-      "Seminar 1",
-      "Seminar 2",
-      "Seminar 3",
-      "Seminar 4",
-      "Foyer",
-      "Crane Hall",
-    ];
-    for (let i = 0; i < roomList.length; i++) {
-      let roomRegex = new RegExp(".*" + roomList[i] + ".*", "i");
-      if (roomRegex.test(string)) {
-        return { found: true, room: roomList[i] };
-      }
-    }
-    return { found: false, room: "NO MATCH" };
-  }
-
-  function getCurrentDateFormatted(hours = 8, minutes = 0, seconds = 0) {
-    const now = new Date();
-    now.setHours(hours, minutes, seconds, 0); // Set time to 08:00:00
-
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const formattedHours = String(now.getHours()).padStart(2, "0");
-    const formattedMinutes = String(now.getMinutes()).padStart(2, "0");
-    const formattedSeconds = String(now.getSeconds()).padStart(2, "0");
-
-    return `${year}-${month}-${day}T${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-  }
-
-  //this logic needs to be fixed to fetch the correct data
-  function getCorrectHour(time, type) {
-    let hour = time.getHours();
-    const minutes = time.getMinutes();
-    let flag = "sharp";
-
-    if (minutes >= 15 && minutes < 45) {
-      flag = "half";
-    } else if (minutes >= 45) {
-      hour += 1;
-    }
-
-    const adjustedHour = hour === 0 ? 24 : hour;
-
-    console.log(
-      `Time: ${time}, Hour: ${adjustedHour}, Minutes: ${minutes}, Flag: ${flag}`
-    );
-    return [adjustedHour, flag];
-  }
-
-//#region
+//#endregion
 
   getData()
     .then((data) => {
