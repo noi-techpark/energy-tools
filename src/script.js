@@ -158,9 +158,14 @@ document.addEventListener("DOMContentLoaded", function () {
             if (isIndexPage) {
               addEvent(room, startTime, endTime, eventName);
             }
+
+            let heatingTime = new Date(startTime.getTime());
+            heatingTime.setHours(startTime.getHours() - 1);
+
             globalEvents.push({
               room: room,
               startTime: startTime,
+              heatingTime: heatingTime,
               endTime: endTime,
               eventName: eventName,
             });
@@ -207,12 +212,13 @@ document.addEventListener("DOMContentLoaded", function () {
       minute: "2-digit",
     });
 
+    console.log(`What is this?:`, event.startTime.getHours());
     // Generate appropriate actions based on room type and time
     const actions = generateActionsForEvent(event);
 
     card.innerHTML = `
-      <h2>${event.eventName}</h2>
-      <div class="action-time">${startTime} - ${event.room}</div>
+      <h2>${event.room}</h2>
+      <div class="action-time">${startTime} - ${event.eventName}</div>
       <ul class="action-list">
           ${actions
             .map(
@@ -228,36 +234,42 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function generateActionsForEvent(event) {
+    const heatingTime = event.heatingTime.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     const actions = [];
-    const timeBeforeEvent = 30; // minutes before event to prepare
+    const timeBeforeEvent = 60; // minutes before event to prepare
 
     // Basic setup actions for all rooms
-    actions.push(`Verify room is clean and ready`);
+    //actions.push(`Verify room is clean and ready`);
 
     // Room-specific actions
     if (event.room.includes("Seminar")) {
+      actions.push(`${heatingTime}: Turn on Heating`);
       actions.push(`Set up chairs and tables`);
       actions.push(`Check projector and screen`);
       actions.push(`Ensure proper lighting`);
-      actions.push(`Place water bottles for speakers`);
     } else if (event.room === "Foyer") {
+      actions.push(`${heatingTime}: Turn on Heating`);
       actions.push(`Arrange reception area`);
       actions.push(`Set up refreshment station`);
       actions.push(`Check lighting and ventilation`);
     } else if (event.room === "Crane Hall") {
-      actions.push(`Configure audio system`);
+      actions.push(`${heatingTime}: Turn on Heating`);
       actions.push(`Set up stage area`);
       actions.push(`Arrange seating for capacity`);
       actions.push(`Test microphones`);
+      actions.push(`Configure audio system`);
     }
 
     // Add timing-based actions
-    const startHour = event.startTime.getHours();
-    if (startHour < 10) {
-      actions.push(`Morning check: temperature adjustment`);
-    } else if (startHour > 16) {
-      actions.push(`Evening check: lighting adjustment`);
-    }
+    // const startHour = event.startTime.getHours();
+    // if (startHour < 10) {
+    //   actions.push(`Morning check: temperature adjustment`);
+    // } else if (startHour > 16) {
+    //   actions.push(`Evening check: lighting adjustment`);
+    // }
 
     return actions;
   }
