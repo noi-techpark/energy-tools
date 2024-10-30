@@ -5,15 +5,17 @@
 document.addEventListener("DOMContentLoaded", function () {
   const isActionsPage = window.location.pathname.includes("actions.html");
   const isIndexPage = !isActionsPage;
-  // Set current date
+
   const currentDate = new Date();
   document.getElementById("current-date").textContent =
     currentDate.toDateString();
   const startDate = getCurrentDateFormatted();
-  const endDate = getCurrentDateFormatted(20, 0, 0); // Set to 20:00:00
-  // Generate time slots hkuykuh
+  const endDate = getCurrentDateFormatted(20, 0, 0); 
+
+//#region INDEX PAGE ONLY 
   if (isIndexPage) {
     const tableBody = document.querySelector("#calendar-table tbody");
+
     for (let hour = 6; hour <= 24; hour++) {
       const row = document.createElement("tr");
       const timeCell = document.createElement("td");
@@ -26,22 +28,20 @@ document.addEventListener("DOMContentLoaded", function () {
         cell.classList.add("schedule-cell");
         row.appendChild(cell);
       }
-
       tableBody.appendChild(row);
     }
 
-    // Function to add events
     function addEvent(room, startTime, endTime, eventName) {
       const [startHour, startFlag] = getCorrectHour(startTime, "start");
       const [endHour, endFlag] = getCorrectHour(endTime);
-      console.log("WATCHOUT");
-      console.log(startHour);
-      console.log(endHour);
-      console.log(endFlag);
+
+      console.log(`LOGGING EVENT'S SCHEDULES:`, startHour, endHour);
+ 
       let duration = endHour - startHour;
       if (endFlag === "half") {
-        duration = duration + 1;
+        duration = duration + 1; //Adjusts the duration for events that end at '30
       }
+
       const roomIndex = [
         "Seminar 1",
         "Seminar 2",
@@ -50,18 +50,16 @@ document.addEventListener("DOMContentLoaded", function () {
         "Foyer",
         "Crane Hall",
       ].indexOf(room);
+
       const rowIndex = startHour - 6;
 
-      console.log("ROOM");
-      console.log(room);
-      //Add heating alert
       const heating = document.querySelector(
         `#calendar-table tbody tr:nth-child(${rowIndex}) td:nth-child(${
           roomIndex + 2
         })`
       );
       heating.classList.add("event-cell");
-      //Fill each cell for the duration of the event
+
       for (let i = 0; i < duration; i++) {
         const cell = document.querySelector(
           `#calendar-table tbody tr:nth-child(${
@@ -72,8 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cell) {
           cell.classList.add("event-cell");
 
-          if (i === 0) {
-            // cell.innerHTML = `<div class="event">${eventName}</div>`;
+          if (i === 0) {;
             cell.innerHTML = `<div class=${
               startFlag === "half" ? "event-start-30" : "event-start-0"
             }>${eventName}</div>`;
@@ -84,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
               startFlag === "half" ? "heating-start-30" : "heating"
             }>HEAT</div>`;
           } else if (i === duration - 1) {
-            //cell.innerHTML = `<div class="event">${eventName}</div>`;
             cell.innerHTML = `<div class=${
               endFlag === "half" ? "event-end-30" : "event-end-0"
             }></div>`;
@@ -105,6 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+
+//#region
+
+//#region BOTH PAGES SHARED REGION
   async function getData() {
     const baseUrl = "https://tourism.api.opendatahub.com/v1/EventShort";
 
@@ -139,7 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function elaborateData(data) {
     const currentDate = new Date();
-    //globalEvents = [];
     for (let i = 0; i < Object.keys(data.Items).length; i++) {
       let roomList = data.Items[i].RoomBooked;
       for (let j = 0; j < Object.keys(roomList).length; j++) {
@@ -326,6 +325,8 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     return [adjustedHour, flag];
   }
+
+//#region
 
   getData()
     .then((data) => {
