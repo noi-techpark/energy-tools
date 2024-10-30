@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
         else if (i === duration-1) {
           //cell.innerHTML = `<div class="event">${eventName}</div>`;
           cell.innerHTML = `<div class=${endFlag === "half" ? "event-end-30" : "event-end-0"}></div>`;
-          cell.innerHTML += `<div class=${endFlag === "half" ? "heating-end-30" : "heating-end-0"}></div>`;
+          cell.innerHTML += `<div class=${endFlag === "half" ? "heating-end-30" : "heating"}></div>`;
         }else{
           cell.innerHTML = `<div class="event-start-0"></div>`;
           cell.innerHTML += `<div class="heating"></div>`;

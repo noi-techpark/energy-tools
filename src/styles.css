@@ -208,7 +208,24 @@ main {
   pointer-events: none;
   z-index: 0; /* Ensures the line doesn't interfere with clicks */
 }
+.hover-div {
+  position: relative;
+}
 
+.hover-div::after {
+  content: "Text that appears on hover";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hover-div:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
 @media (max-width: 768px) {
   #calendar-table {
     font-size: 14px;
