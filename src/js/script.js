@@ -215,7 +215,9 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(`What is this?:`, event.startTime.getHours());
     // Generate appropriate actions based on room type and time
     const actions = generateActionsForEvent(event);
-
+    // I need to perform a check to avoid inserting the same room multiple times
+    // so the following html must probably be anticipated by an if statement to check whether 
+    // the event.room is already present
     card.innerHTML = `
       <h2>${event.room}</h2>
       <div class="action-time">${startTime} - ${event.eventName}</div>
@@ -239,7 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
       minute: "2-digit",
     });
     const actions = [];
-    const timeBeforeEvent = 60; // minutes before event to prepare
 
     // Basic setup actions for all rooms
     //actions.push(`Verify room is clean and ready`);

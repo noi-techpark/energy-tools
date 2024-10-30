@@ -1,0 +1,120 @@
+/* SPDX-FileCopyrightText: 2024 NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0  */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  header {
+    background-color: #010d01;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  main {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  
+  .redirect-button {
+    padding: 10px 20px;
+    background-color: #f1f5f8;
+    color: rgb(11, 10, 10);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .redirect-button:hover {
+    background-color: #c0c6ce;
+  }
+  
+  /* Actions Page Styles */
+  .actions-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+  
+  .action-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    border-left: 4px solid #007bff;
+  }
+  
+  .action-card h2 {
+    margin: 0 0 10px 0;
+    color: #333;
+  }
+  
+  .action-time {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+  }
+  
+  .action-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+  }
+  
+  .action-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+  }
+  
+  .action-item:last-child {
+    border-bottom: none;
+  }
+  
+  .action-status {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+  }
+  
+  .action-status label {
+    margin-left: 8px;
+    color: #666;
+  }
+  
+  .back-button {
+    padding: 8px 16px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+  
+  .back-button:hover {
+    background-color: #5a6268;
+  }
+  
+  .actions-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+  
+  .actions-button:hover {
+    background-color: #218838;
+  }
+  
+
+  

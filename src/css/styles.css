@@ -228,15 +228,15 @@ main {
 }
 .redirect-button {
   padding: 10px 20px;
-  background-color: #f1f5f8;
-  color: rgb(11, 10, 10);
+  background-color: #6c757d;
+  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .redirect-button:hover {
-  background-color: #c0c6ce;
+  background-color: #5a6268;
 }
 
 /* Actions Page Styles */
@@ -306,22 +306,6 @@ main {
 .back-button:hover {
   background-color: #5a6268;
 }
-
-/* Add this to your existing index.html page */
-.actions-button {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 10px 0;
-}
-
-.actions-button:hover {
-  background-color: #218838;
-}
-
 
 @media (max-width: 768px) {
   #calendar-table {
