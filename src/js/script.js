@@ -6,11 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const isActionsPage = window.location.pathname.includes("actions.html");
   const isIndexPage = !isActionsPage;
 
-  const currentDate = new Date();
+  let selectedDate = new Date();
   document.getElementById("current-date").textContent =
-    currentDate.toDateString();
-  const startDate = getCurrentDateFormatted();
-  const endDate = getCurrentDateFormatted(20, 0, 0); 
+    selectedDate.toDateString();
+  const startDate = getDateFormatted();
+  const endDate = getDateFormatted(new Date(),20, 0, 0); 
+
 
 //#region UTILITY FUNCTIONS  
   function mapStatus(string) {
@@ -31,8 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return { found: false, room: "NO MATCH" };
   }
 
-  function getCurrentDateFormatted(hours = 8, minutes = 0, seconds = 0) {
-    const now = new Date();
+  function getDateFormatted(selectedDate = new Date(),hours = 8, minutes = 0, seconds = 0) {
+    const now = new Date(selectedDate);
     now.setHours(hours, minutes, seconds, 0); // Set time to 08:00:00
 
     const year = now.getFullYear();
@@ -69,7 +70,44 @@ document.addEventListener("DOMContentLoaded", function () {
   if (isIndexPage) {
     const tableBody = document.querySelector("#calendar-table tbody");
 
-    for (let hour = 6; hour <= 24; hour++) {
+document.getElementById('prevDay').addEventListener('click', () => {
+  selectedDate.setDate(selectedDate.getDate() - 1);
+  updateCalendar();
+});
+
+document.getElementById('nextDay').addEventListener('click', () => {
+  selectedDate.setDate(selectedDate.getDate() + 1);
+  updateCalendar();
+});
+
+function updateCalendar() {
+document.getElementById("current-date").textContent = selectedDate.toDateString();
+
+clearEvents();
+// Fetch and display events for the selected date
+const startDate = getDateFormatted(selectedDate, 8, 0, 0);
+const endDate = getDateFormatted(selectedDate, 20, 0, 0);
+getData(startDate,endDate)
+.then((data) => {
+  elaborateData(data,selectedDate);
+  if (isActionsPage) {
+    generateActionCards();
+  }
+})
+.catch((error) => {
+  console.error("error processing data: ", error);
+});
+}
+
+function clearEvents() {
+const cells = document.querySelectorAll('.schedule-cell');
+cells.forEach(cell => {
+    cell.className = 'schedule-cell';
+    cell.innerHTML = '';
+});
+}
+
+    for (let hour = 4; hour <= 24; hour++) {
       const row = document.createElement("tr");
       const timeCell = document.createElement("td");
       timeCell.classList.add("time-slot");
@@ -104,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Crane Hall",
       ].indexOf(room);
 
-      const rowIndex = startHour - 6;
+      const rowIndex = startHour - 4;
 
       const heating = document.querySelector(
         `#calendar-table tbody tr:nth-child(${rowIndex}) td:nth-child(${
@@ -158,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //#region
 
 
-  async function getData() {
+  async function getData(startDate,endDate) {
     const baseUrl = "https://tourism.api.opendatahub.com/v1/EventShort";
 
     const params = new URLSearchParams({
@@ -190,8 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let globalEvents = [];
 
-  function elaborateData(data) {
-    const currentDate = new Date();
+  function elaborateData(data,selectedDate) {
+    const currentDate = new Date(selectedDate);
+    console.log(`CURRENT DATE`, currentDate.toDateString());
     for (let i = 0; i < Object.keys(data.Items).length; i++) {
       let roomList = data.Items[i].RoomBooked;
       for (let j = 0; j < Object.keys(roomList).length; j++) {
@@ -203,7 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
           let startTime = new Date(roomBooked["StartDate"]);
           let endTime = new Date(roomBooked["EndDate"]);
           let eventName = data.Items[i]["EventDescription"];
-          console.log(startTime);
+          console.log(`START TIME:`,startTime.toDateString());
           console.log(endTime);
           console.log(eventName);
           if (startTime.toDateString() === currentDate.toDateString()) {
@@ -321,9 +360,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 //#endregion
 
-  getData()
+  getData(startDate,endDate)
     .then((data) => {
-      elaborateData(data);
+      elaborateData(data,selectedDate);
       if (isActionsPage) {
         generateActionCards();
       }
