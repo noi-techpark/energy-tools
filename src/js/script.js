@@ -6,13 +6,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const isActionsPage = window.location.pathname.includes("actions.html");
   const isIndexPage = !isActionsPage;
 
-  let selectedDate = new Date();
-  document.getElementById("current-date").textContent =
-    selectedDate.toDateString();
-  const startDate = getDateFormatted();
-  const endDate = getDateFormatted(new Date(),20, 0, 0); 
-
-
+  function saveSelectedDate(date) {
+    sessionStorage.setItem('selectedDate', date.toISOString());
+  }
+  
+  function loadSelectedDate() {
+    const savedDate = sessionStorage.getItem('selectedDate');
+    return savedDate ? new Date(savedDate) : new Date();
+  }
+  
+  let selectedDate = loadSelectedDate();
+  document.getElementById("current-date").textContent = selectedDate.toDateString();
+  
+  const startDate = getDateFormatted(selectedDate, 8, 0, 0);
+  const endDate = getDateFormatted(selectedDate, 20, 0, 0);
+  
 //#region UTILITY FUNCTIONS  
   function mapStatus(string) {
     const roomList = [
@@ -72,11 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.getElementById('prevDay').addEventListener('click', () => {
   selectedDate.setDate(selectedDate.getDate() - 1);
+  saveSelectedDate(selectedDate);
   updateCalendar();
 });
 
 document.getElementById('nextDay').addEventListener('click', () => {
   selectedDate.setDate(selectedDate.getDate() + 1);
+  saveSelectedDate(selectedDate);
   updateCalendar();
 });
 
@@ -192,7 +202,7 @@ cells.forEach(cell => {
       }
     }
   }
-
+// end of the index.html only part
 //#region
 
 
@@ -248,7 +258,7 @@ cells.forEach(cell => {
           if (startTime.toDateString() === currentDate.toDateString()) {
 
             if (isIndexPage) {
-              addEvent(room, startTime, endTime, eventName); //addevent can be called only from the context of the IndexPage
+              addEvent(room, startTime, endTime, eventName); //addEvent can be called only from the context of the IndexPage
             }
 
             let heatingTime = new Date(startTime.getTime());
