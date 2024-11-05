@@ -7,27 +7,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const isIndexPage = !isActionsPage;
 
   function saveSelectedDate(date) {
-    sessionStorage.setItem('selectedDate', date.toISOString());
+    sessionStorage.setItem("selectedDate", date.toISOString());
   }
-  
+
   function loadSelectedDate() {
-    const savedDate = sessionStorage.getItem('selectedDate');
+    const savedDate = sessionStorage.getItem("selectedDate");
     return savedDate ? new Date(savedDate) : new Date();
   }
-  
+
   let selectedDate = loadSelectedDate();
-  document.getElementById("current-date").textContent = selectedDate.toDateString();
-  
+  document.getElementById("current-date").textContent =
+    selectedDate.toDateString();
+
   const startDate = getDateFormatted(selectedDate, 8, 0, 0);
   const endDate = getDateFormatted(selectedDate, 20, 0, 0);
-  
-//#region UTILITY FUNCTIONS  
+
+  //#region UTILITY FUNCTIONS
+  // add some custom logic to handle the cases where "Semina Area is booked" - "problem that arose with sfscon"
   function mapStatus(string) {
     const roomList = [
       "Seminar 1",
       "Seminar 2",
       "Seminar 3",
       "Seminar 4",
+      "Seminar Area",
       "Foyer",
       "Crane Hall",
     ];
@@ -40,7 +43,12 @@ document.addEventListener("DOMContentLoaded", function () {
     return { found: false, room: "NO MATCH" };
   }
 
-  function getDateFormatted(selectedDate = new Date(),hours = 8, minutes = 0, seconds = 0) {
+  function getDateFormatted(
+    selectedDate = new Date(),
+    hours = 8,
+    minutes = 0,
+    seconds = 0
+  ) {
     const now = new Date(selectedDate);
     now.setHours(hours, minutes, seconds, 0); // Set time to 08:00:00
 
@@ -67,55 +75,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const adjustedHour = hour === 0 ? 24 : hour;
 
-    console.log(
-      `Time: ${time}, Hour: ${adjustedHour}, Minutes: ${minutes}, Flag: ${flag}`
-    );
+    // console.log(
+    //   `Time: ${time}, Hour: ${adjustedHour}, Minutes: ${minutes}, Flag: ${flag}`
+    // ); // OLD LOGGING
     return [adjustedHour, flag];
   }
-//#endregion
+  //#endregion
 
-//#region INDEX PAGE ONLY 
+  //#region INDEX PAGE ONLY
   if (isIndexPage) {
     const tableBody = document.querySelector("#calendar-table tbody");
 
-document.getElementById('prevDay').addEventListener('click', () => {
-  selectedDate.setDate(selectedDate.getDate() - 1);
-  saveSelectedDate(selectedDate);
-  updateCalendar();
-});
+    document.getElementById("prevDay").addEventListener("click", () => {
+      selectedDate.setDate(selectedDate.getDate() - 1);
+      saveSelectedDate(selectedDate);
+      updateCalendar();
+    });
 
-document.getElementById('nextDay').addEventListener('click', () => {
-  selectedDate.setDate(selectedDate.getDate() + 1);
-  saveSelectedDate(selectedDate);
-  updateCalendar();
-});
+    document.getElementById("nextDay").addEventListener("click", () => {
+      selectedDate.setDate(selectedDate.getDate() + 1);
+      saveSelectedDate(selectedDate);
+      updateCalendar();
+    });
 
-function updateCalendar() {
-document.getElementById("current-date").textContent = selectedDate.toDateString();
+    function updateCalendar() {
+      document.getElementById("current-date").textContent =
+        selectedDate.toDateString();
 
-clearEvents();
-// Fetch and display events for the selected date
-const startDate = getDateFormatted(selectedDate, 8, 0, 0);
-const endDate = getDateFormatted(selectedDate, 20, 0, 0);
-getData(startDate,endDate)
-.then((data) => {
-  elaborateData(data,selectedDate);
-  if (isActionsPage) {
-    generateActionCards();
-  }
-})
-.catch((error) => {
-  console.error("error processing data: ", error);
-});
-}
+      clearEvents();
+      // Fetch and display events for the selected date
+      const startDate = getDateFormatted(selectedDate, 8, 0, 0);
+      const endDate = getDateFormatted(selectedDate, 20, 0, 0);
+      getData(startDate, endDate)
+        .then((data) => {
+          elaborateData(data, selectedDate);
+          if (isActionsPage) {
+            generateActionCards();
+          }
+        })
+        .catch((error) => {
+          console.error("error processing data: ", error);
+        });
+    }
 
-function clearEvents() {
-const cells = document.querySelectorAll('.schedule-cell');
-cells.forEach(cell => {
-    cell.className = 'schedule-cell';
-    cell.innerHTML = '';
-});
-}
+    function clearEvents() {
+      const cells = document.querySelectorAll(".schedule-cell");
+      cells.forEach((cell) => {
+        cell.className = "schedule-cell";
+        cell.innerHTML = "";
+      });
+    }
 
     for (let hour = 4; hour <= 24; hour++) {
       const row = document.createElement("tr");
@@ -136,8 +145,8 @@ cells.forEach(cell => {
       const [startHour, startFlag] = getCorrectHour(startTime, "start");
       const [endHour, endFlag] = getCorrectHour(endTime);
 
-      console.log(`LOGGING EVENT'S SCHEDULES:`, startHour, endHour);
- 
+      // console.log(`LOGGING EVENT'S SCHEDULES:`, startHour, endHour);
+
       let duration = endHour - startHour;
       if (endFlag === "half") {
         duration = duration + 1; //Adjusts the duration for events that end at '30
@@ -171,7 +180,7 @@ cells.forEach(cell => {
         if (cell) {
           cell.classList.add("event-cell");
 
-          if (i === 0) {;
+          if (i === 0) {
             cell.innerHTML = `<div class=${
               startFlag === "half" ? "event-start-30" : "event-start-0"
             }>${eventName}</div>`;
@@ -202,11 +211,10 @@ cells.forEach(cell => {
       }
     }
   }
-// end of the index.html only part
-//#region
+  // end of the index.html only part
+  //#region
 
-
-  async function getData(startDate,endDate) {
+  async function getData(startDate, endDate) {
     const baseUrl = "https://tourism.api.opendatahub.com/v1/EventShort";
 
     const params = new URLSearchParams({
@@ -238,27 +246,35 @@ cells.forEach(cell => {
 
   let globalEvents = [];
 
-  function elaborateData(data,selectedDate) {
+  function elaborateData(data, selectedDate) {
     const currentDate = new Date(selectedDate);
     console.log(`CURRENT DATE`, currentDate.toDateString());
     for (let i = 0; i < Object.keys(data.Items).length; i++) {
       let roomList = data.Items[i].RoomBooked;
       for (let j = 0; j < Object.keys(roomList).length; j++) {
         let roomBooked = data.Items[i].RoomBooked[j];
-        console.log(roomBooked["SpaceDesc"]);
-        const { found, room } = mapStatus(roomBooked["SpaceDesc"]);
-        console.log(room);
+        let { found, room } = mapStatus(roomBooked["SpaceDesc"]);
+        
         if (found) {
           let startTime = new Date(roomBooked["StartDate"]);
           let endTime = new Date(roomBooked["EndDate"]);
-          let eventName = data.Items[i]["EventDescription"];
-          console.log(`START TIME:`,startTime.toDateString());
-          console.log(endTime);
-          console.log(eventName);
-          if (startTime.toDateString() === currentDate.toDateString()) {
+          let eventName = data.Items[i]["EventDescriptionEN"];//could be also EventDescription(DE|EN|IT|'')
 
+          if (startTime.toDateString() === currentDate.toDateString()) {
+            console.log(`EVENT ON CURRENT DATE`);
+            console.log(`EVENT NAME: `,eventName);
+            console.log(`EVENT ROOM: `,room);
+            console.log(`START TIME: day: ${startTime.toDateString()} hour: ${startTime.getHours()}`);
+            console.log(`END TIME: day: ${endTime.toDateString()} hour: ${endTime.getHours()}`);    
             if (isIndexPage) {
-              addEvent(room, startTime, endTime, eventName); //addEvent can be called only from the context of the IndexPage
+              if (room === "Seminar Area") {
+                for (let i = 1; i < 5; i++) {
+                  room = `Seminar ${i}`;
+                  addEvent(room, startTime, endTime, eventName);
+                }
+              } else {
+                addEvent(room, startTime, endTime, eventName); //addEvent can be called only from the context of the IndexPage
+              }
             }
 
             let heatingTime = new Date(startTime.getTime());
@@ -272,18 +288,22 @@ cells.forEach(cell => {
               eventName: eventName,
             });
           } else {
-            console.log("Event not on current date, skipping");
+            console.log(`SKIPPING EVENT SINCE DIFFERENT DATE: `);
+            console.log(`EVENT NAME: `,eventName);
+            console.log(`EVENT ROOM: `,room);
+            console.log(`START TIME: day: ${startTime.toDateString()} hour: ${startTime.getHours()}`);
+            console.log(`END TIME: day: ${endTime.toDateString()} hour: ${endTime.getHours()}`);            
           }
         }
       }
     }
   }
 
-//#region ACTIONS CARDS
+  //#region ACTIONS CARDS
   function generateActionCards() {
     const actionsContainer = document.querySelector(".actions-container");
     console.log("Actions container:", actionsContainer);
-    console.log("Global events:", globalEvents.length); 
+    console.log("Global events:", globalEvents.length);
 
     if (!actionsContainer) {
       console.log("Actions container not found!");
@@ -310,7 +330,7 @@ cells.forEach(cell => {
     const actions = generateActionsForEvent(event);
 
     // I need to perform a check to avoid inserting the same room multiple times
-    // so the following html must probably be anticipated by an if statement to check whether 
+    // so the following html must probably be anticipated by an if statement to check whether
     // the event.room is already present
     card.innerHTML = `
       <h2>${event.room}</h2>
@@ -368,11 +388,11 @@ cells.forEach(cell => {
 
     return actions;
   }
-//#endregion
+  //#endregion
 
-  getData(startDate,endDate)
+  getData(startDate, endDate)
     .then((data) => {
-      elaborateData(data,selectedDate);
+      elaborateData(data, selectedDate);
       if (isActionsPage) {
         generateActionCards();
       }
