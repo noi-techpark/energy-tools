@@ -1,0 +1,102 @@
+<!--  SPDX-FileCopyrightText: 2024 NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/script.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actual room condition</title>
+    <link rel="stylesheet" href="../css/styles4actions.css">
+</head>
+<body>
+    <header>
+        <h1 id="current-date"></h1>
+        <button class="back-button" onclick="window.location.href='index.html'">Back to Calendar</button>
+    </header>
+    <main class="actions-container">
+        <table class="table" id="seminar-table">
+            <thead>
+                <tr>
+                    <th class="th"></th>
+                    <th class="th">Timestamp</th>
+                    <th class="th">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="th">Temperature (°C)</th>
+                    <td class="td" id="temperature_timestamp">
+                        <script>
+                            getRoomData("NOI-A1-Floor1-CO2","temperature","timestamp",function(value){
+                                $("#temperature_timestamp").html(value);
+                            });
+                        </script>
+                    </td>
+                    <td class="td" ID="temperature">
+                        <script>
+                            getRoomData("NOI-A1-Floor1-CO2","temperature","value",function(value){
+                                $("#temperature").html(value);
+                            });
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="th">Humidity (%)</th>
+                    <td class="td" id="humidity_timestamp">
+                        <script>
+                            getRoomData("NOI-A1-Floor1-CO2","humidity","timestamp",function(value){
+                                $("#humidity_timestamp").html(value);
+                            });
+                        </script>
+                    </td>
+                    <td class="td" id="humidity">
+                        <script>
+                            getRoomData("NOI-A1-Floor1-CO2","humidity","value",function(value){
+                                $("#humidity").html(value);
+                            });
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="th">Carbon dioxide (ppm)</th>
+                    <td class="td" id="co2_timestamp">
+                        <script>
+                            getRoomData("NOI-A1-Floor1-CO2","co2","timestamp",function(value){
+                                $("#co2_timestamp").html(value);
+                            });
+                        </script>
+                    </td>
+                    <td class="td" id="co2">
+                        <script>
+                            getRoomData("NOI-A1-Floor1-CO2","co2","value",function(value){
+                                $("#co2").html(value);
+                            });
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="th">Battery status(ppm)</th>
+                    <td class="td" id="battery_timestamp">
+                        <script>
+                            getRoomData("NOI-A1-Floor1-CO2","battery","timestamp",function(value){
+                                $("#battery_timestamp").html(value);
+                            });
+                        </script>
+                    </td>
+                    <td class="td" id="battery">
+                        <script>
+                            getRoomData("NOI-A1-Floor1-CO2","battery","value",function(value){
+                                $("#battery").html(value);
+                            });
+                        </script>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

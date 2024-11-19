@@ -401,3 +401,39 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("error processing data: ", error);
     });
 });
+
+function getRoomData(sensorStation,dataType,column,callback){
+  var link = "http://saocompute.eurac.edu/sensordb/query?db=db_opendatahub&u=opendatahub&p=H84o0VpLqqnZ0Drm&q=select%20*%20from%20device_frmpayload_data_message%20where%20device_name%20=%20%27" + sensorStation + "%27%20order%20by%20time%20desc%20limit%201"; 
+  
+  $.get(link, (data, status) => {
+    if (status == "success"){
+      if (column == "timestamp") {
+        callback(data.results[0].series[0].values[0][0]);
+      } else {
+        if (column == "value") {
+          jsonData = JSON.parse(data.results[0].series[0].values[0][5])
+          if (dataType == "temperature") {
+            callback(jsonData.temperature);
+          } else {
+            if (dataType == "humidity") {
+            callback(jsonData.humidity);
+            } else {
+              if (dataType == "co2") {
+                callback(jsonData.co2);
+              } else {
+                if (dataType == "battery") {
+                  callback(jsonData.battery);
+                } else {
+                  console.log("Error: no data type " + dataType);
+                  callback("");
+                }
+              }
+            }
+          } 
+        }
+      }    
+    } else {
+      console.log("Error: " + status);
+    }
+  });
+}
