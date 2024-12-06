@@ -18,9 +18,9 @@ SPDX-License-Identifier: CC0-1.0 -->
         <button class="back-button" onclick="window.location.href='index.html'">Back to Calendar</button>
     </header>
     <main class="actions-container">
-        <h1>Seminar Room 1</h1>
+        <h1>Seminar Room 4</h1>
         <p>
-            Here you can find the detail and real time information of the Seminar Room 1.
+            Here you can find the detail and real time information of the Seminar Room 4.
         </p>
         <table class="table" id="seminar-table">
             <thead>
@@ -35,14 +35,14 @@ SPDX-License-Identifier: CC0-1.0 -->
                     <th class="th">Temperature (°C)</th>
                     <td class="td" id="temperature_timestamp">
                         <script>
-                            getRoomData("NOI-A1-Floor1-CO2","temperature","timestamp",function(value){
+                            getRoomData("NOI-Brunico-Temperature","temperature","timestamp",function(value){
                                 $("#temperature_timestamp").html(value);
                             });
                         </script>
                     </td>
                     <td class="td" ID="temperature">
                         <script>
-                            getRoomData("NOI-A1-Floor1-CO2","temperature","value",function(value){
+                            getRoomData("NOI-Brunico-Temperature","temperature","value",function(value){
                                 $("#temperature").html(value);
                             });
                         </script>
@@ -52,14 +52,14 @@ SPDX-License-Identifier: CC0-1.0 -->
                     <th class="th">Humidity (%)</th>
                     <td class="td" id="humidity_timestamp">
                         <script>
-                            getRoomData("NOI-A1-Floor1-CO2","humidity","timestamp",function(value){
+                            getRoomData("NOI-Brunico-Temperature","humidity","timestamp",function(value){
                                 $("#humidity_timestamp").html(value);
                             });
                         </script>
                     </td>
                     <td class="td" id="humidity">
                         <script>
-                            getRoomData("NOI-A1-Floor1-CO2","humidity","value",function(value){
+                            getRoomData("NOI-Brunico-Temperature","humidity","value",function(value){
                                 $("#humidity").html(value);
                             });
                         </script>
@@ -69,14 +69,14 @@ SPDX-License-Identifier: CC0-1.0 -->
                     <th class="th">Carbon dioxide (ppm)</th>
                     <td class="td" id="co2_timestamp">
                         <script>
-                            getRoomData("NOI-A1-Floor1-CO2","co2","timestamp",function(value){
+                            getRoomData("NOI-Brunico-Temperature","co2","timestamp",function(value){
                                 $("#co2_timestamp").html(value);
                             });
                         </script>
                     </td>
                     <td class="td" id="co2">
                         <script>
-                            getRoomData("NOI-A1-Floor1-CO2","co2","value",function(value){
+                            getRoomData("NOI-Brunico-Temperature","co2","value",function(value){
                                 $("#co2").html(value);
                             });
                         </script>
@@ -86,14 +86,14 @@ SPDX-License-Identifier: CC0-1.0 -->
                     <th class="th">Battery status(ppm)</th>
                     <td class="td" id="battery_timestamp">
                         <script>
-                            getRoomData("NOI-A1-Floor1-CO2","battery","timestamp",function(value){
+                            getRoomData("NNOI-Brunico-Temperature","battery","timestamp",function(value){
                                 $("#battery_timestamp").html(value);
                             });
                         </script>
                     </td>
                     <td class="td" id="battery">
                         <script>
-                            getRoomData("NOI-A1-Floor1-CO2","battery","value",function(value){
+                            getRoomData("NOI-Brunico-Temperature","battery","value",function(value){
                                 $("#battery").html(value);
                             });
                         </script>
