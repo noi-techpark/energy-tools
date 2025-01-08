@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     seconds = 0
   ) {
     const now = new Date(selectedDate);
-    now.setHours(hours, minutes, seconds, 0); // Set time to 08:00:00
+    now.setHours(hours, minutes, seconds, 0); 
 
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (i === 0) {
             cell.innerHTML = `<div class=${
               startFlag === "half" ? "event-start-30" : "event-start-0"
-            }>${eventName}</div>`;
+            } title="wtf!">${eventName}</div>`;
             cell.innerHTML += `<div class=${
               startFlag === "half" ? "heating" : "heating"
             }></div>`;
@@ -403,7 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getRoomData(sensorStation,dataType,column,callback){
-  var baseUrl = "http://saocompute.eurac.edu/sensordb/query?db=db_opendatahub&u=opendatahub&p=H84o0VpLqqnZ0Drm&q="
+  var baseUrl = "https://edp-portal.eurac.edu//sensordb/query?db=db_opendatahub&u=opendatahub&p=H84o0VpLqqnZ0Drm&q="
   var query = "select%20*%20from%20device_frmpayload_data_message%20where%20device_name%20=%20%27" + sensorStation + "%27%20order%20by%20time%20desc%20limit%201"
   var link = baseUrl + query; 
   

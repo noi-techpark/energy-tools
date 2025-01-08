@@ -177,6 +177,20 @@ main {
   /* Set a specific height for the cells */
 }
 
+.event-start-0::after{
+  --tooltipScale: 0;
+
+  content:attr(title);
+  position: absolute;
+  top: -1.75rem;
+  left: 0;
+  transform: scale(var(--tooltipScale));
+  transform-origin: bottom left;
+}
+
+.event-start-0:hover::after{
+  --tooltipScale: 1;
+}
 /* Base style for event text */
 /* Base style for event text */
 .event,
