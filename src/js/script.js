@@ -405,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function getRoomData(sensorStation,dataType,column,callback){
   var baseUrl = "https://mobility.api.opendatahub.testingmachine.eu/"
   var StationType = "IndoorStation"
-  var query = "v2/flat%2Cnode/"+ StationType+ "/*/latest?limit=1&&offset=0&where=and(sname.eq." + sensorStation + ",tname.eq." + dataType + ")&shownull=false&distinct=true&timezone=UTC"
+  var query = "v2/flat%2Cnode/"+ StationType+ "/*/latest?limit=1&&offset=0&where=and(sname.eq." + sensorStation + ",tname.eq." + dataType + ")&shownull=false&distinct=true&timezone=+1"
   var link = baseUrl + query;
   $.get(link, (data, status) => {
     if (status == "success"){
