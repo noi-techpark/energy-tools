@@ -35,14 +35,14 @@ SPDX-License-Identifier: CC0-1.0 -->
                     <th class="th">Temperature (°C)</th>
                     <td class="td" id="temperature_timestamp">
                         <script>
-                            getRoomData("NOI-Brunico-Temperature","temperature","timestamp",function(value){
+                            getRoomData("NOI:NOI-Brunico-Temperature","air-temperature","timestamp",function(value){
                                 $("#temperature_timestamp").html(value);
                             });
                         </script>
                     </td>
                     <td class="td" ID="temperature">
                         <script>
-                            getRoomData("NOI-Brunico-Temperature","temperature","value",function(value){
+                            getRoomData("NOI:NOI-Brunico-Temperature","air-temperature","value",function(value){
                                 $("#temperature").html(value);
                             });
                         </script>
@@ -52,14 +52,14 @@ SPDX-License-Identifier: CC0-1.0 -->
                     <th class="th">Humidity (%)</th>
                     <td class="td" id="humidity_timestamp">
                         <script>
-                            getRoomData("NOI-Brunico-Temperature","humidity","timestamp",function(value){
+                            getRoomData("NOI:NOI-Brunico-Temperature","air-humidity","timestamp",function(value){
                                 $("#humidity_timestamp").html(value);
                             });
                         </script>
                     </td>
                     <td class="td" id="humidity">
                         <script>
-                            getRoomData("NOI-Brunico-Temperature","humidity","value",function(value){
+                            getRoomData("NOI:NOI-Brunico-Temperature","air-humidity","value",function(value){
                                 $("#humidity").html(value);
                             });
                         </script>
@@ -69,32 +69,32 @@ SPDX-License-Identifier: CC0-1.0 -->
                     <th class="th">Carbon dioxide (ppm)</th>
                     <td class="td" id="co2_timestamp">
                         <script>
-                            getRoomData("NOI-Brunico-Temperature","co2","timestamp",function(value){
+                            getRoomData("NOI:NOI-Brunico-Temperature","co2","timestamp",function(value){
                                 $("#co2_timestamp").html(value);
                             });
                         </script>
                     </td>
                     <td class="td" id="co2">
                         <script>
-                            getRoomData("NOI-Brunico-Temperature","co2","value",function(value){
+                            getRoomData("NOI:NOI-Brunico-Temperature","co2","value",function(value){
                                 $("#co2").html(value);
                             });
                         </script>
                     </td>
                 </tr>
                 <tr>
-                    <th class="th">Battery status(ppm)</th>
-                    <td class="td" id="battery_timestamp">
+                    <th class="th">Battery status(%)</th>
+                    <td class="td" id="battery-state_timestamp">
                         <script>
-                            getRoomData("NOI-Brunico-Temperature","battery","timestamp",function(value){
-                                $("#battery_timestamp").html(value);
+                            getRoomData("NOI:NOI-Brunico-Temperature","battery-state","timestamp",function(value){
+                                $("#battery-state_timestamp").html(value);
                             });
                         </script>
                     </td>
-                    <td class="td" id="battery">
+                    <td class="td" id="battery-state">
                         <script>
-                            getRoomData("NOI-Brunico-Temperature","battery","value",function(value){
-                                $("#battery").html(value);
+                            getRoomData("NOI:NOI-Brunico-Temperature","battery-state","value",function(value){
+                                $("#battery-state").html(value);
                             });
                         </script>
                     </td>

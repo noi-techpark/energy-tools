@@ -403,35 +403,25 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getRoomData(sensorStation,dataType,column,callback){
-  var baseUrl = "https://edp-portal.eurac.edu//sensordb/query?db=db_opendatahub&u=opendatahub&p=H84o0VpLqqnZ0Drm&q="
-  var query = "select%20*%20from%20device_frmpayload_data_message%20where%20device_name%20=%20%27" + sensorStation + "%27%20order%20by%20time%20desc%20limit%201"
-  var link = baseUrl + query; 
-  
+  var baseUrl = "https://mobility.api.opendatahub.testingmachine.eu/"
+  var StationType = "IndoorStation"
+  var query = "v2/flat%2Cnode/"+ StationType+ "/*/latest?limit=1&&offset=0&where=and(sname.eq." + sensorStation + ",tname.eq." + dataType + ")&shownull=false&distinct=true&timezone=UTC"
+  var link = baseUrl + query;
   $.get(link, (data, status) => {
     if (status == "success"){
       if (column == "timestamp") {
-        callback(data.results[0].series[0].values[0][0]);
+        var timestamp = data.data[0]._timestamp
+        callback(timestamp);
       } else {
+        unit = ""
+        if (dataType == "battery-state"){
+          unit = "%"
+        } else {
+          unit = data.data[0].tunit
+        }
+        measurement = data.data[0].mvalue + " " + unit
         if (column == "value") {
-          jsonData = JSON.parse(data.results[0].series[0].values[0][5])
-          if (dataType == "temperature") {
-            callback(jsonData.temperature);
-          } else {
-            if (dataType == "humidity") {
-            callback(jsonData.humidity);
-            } else {
-              if (dataType == "co2") {
-                callback(jsonData.co2);
-              } else {
-                if (dataType == "battery") {
-                  callback(jsonData.battery);
-                } else {
-                  console.log("Error: no data type " + dataType);
-                  callback("");
-                }
-              }
-            }
-          } 
+          callback(measurement)
         }
       }    
     } else {
